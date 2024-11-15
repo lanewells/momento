@@ -5,7 +5,7 @@ const ItemSchema = new mongoose.Schema(
     type: {
       type: String,
       required: true, 
-      trim: true, // Removes extra whitespace
+      trim: true,
     },
     text: {
       type: String,
@@ -15,10 +15,12 @@ const ItemSchema = new mongoose.Schema(
     src: {
       type: String,
       trim: true,
+      default: null,
     },
     altText: {
       type: String,
       trim: true,
+      default: null,
     },
   },
   {
