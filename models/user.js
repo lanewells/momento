@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      unique: true,
+      unique: [true, "Username is already taken."],
       required: true,
       minlength: 3,
       maxlength: 30,
