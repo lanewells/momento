@@ -31,18 +31,6 @@ const userSchema = new mongoose.Schema(
   }
 )
 
-// Hash password
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("passwordHash")) return next()
-  try {
-    const saltRounds = 10
-    this.passwordHash = await bcrypt.hash(this.passwordHash, saltRounds)
-    next()
-  } catch (error) {
-    next(error)
-  }
-})
-
 // Confirm passwords
 userSchema.methods.isValidPassword = async function (password) {
   return await bcrypt.compare(password, this.passwordHash)
