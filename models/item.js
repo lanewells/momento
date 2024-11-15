@@ -20,11 +20,6 @@ const ItemSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    capsule_id: {
-      type: String,
-      required: true,
-      trim: true,
-    },
   },
   {
     timestamps: true, 
