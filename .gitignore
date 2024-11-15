@@ -1,6 +1,5 @@
 # Node.js
 node_modules/
-.env
 
 # Logs
 logs/
@@ -32,3 +31,6 @@ coverage/
 .cache/
 dist/
 build/
+package-lock.json
+package.json
+.env
