@@ -37,6 +37,7 @@ router.post("/signup", async (req, res) => {
 // Signin
 router.post("/signin", async (req, res) => {
   try {
+    console.log("Requesting body:", req.body)
     const user = await User.findOne({ username: req.body.username })
     if (!user) {
       return res.status(401).json({ error: "Invalid username or password." })
