@@ -15,9 +15,7 @@ const capsuleSchema = mongoose.Schema({
     default: "pending seal",
     required: false
   },
-  contents: [
-    { type: mongoose.Schema.Types.ObjectId, ref: "Item", required: true }
-  ]
+  items: [{ type: mongoose.Schema.Types.ObjectId, ref: "Item", required: true }]
 })
 
 const Capsule = mongoose.model("Capsule", capsuleSchema)
