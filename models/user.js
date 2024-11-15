@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      unique: true,
+      unique: [true, "Username is already taken."],
       required: true,
       minlength: 3,
       maxlength: 30,
@@ -30,18 +30,6 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 )
-
-// Hash password
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("passwordHash")) return next()
-  try {
-    const saltRounds = 10
-    this.passwordHash = await bcrypt.hash(this.passwordHash, saltRounds)
-    next()
-  } catch (error) {
-    next(error)
-  }
-})
 
 // Confirm passwords
 userSchema.methods.isValidPassword = async function (password) {

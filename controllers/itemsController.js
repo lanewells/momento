@@ -1,4 +1,6 @@
-const Item = require("../models/item")
+const Item = require("../models/item");
+const express = require('express');
+const router = express.Router();
 
 // Create a new item
 exports.createItem = async (req, res) => {
@@ -93,3 +95,5 @@ exports.deleteItem = async (req, res) => {
       .json({ error: "Failed to delete item", details: error.message })
   }
 }
+
+module.exports = router
