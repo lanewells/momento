@@ -18,14 +18,14 @@ app.use(express.json())
 const testJWTRouter = require("./controllers/test-jwt")
 const usersRouter = require("./controllers/usersController")
 const profilesRouter = require("./controllers/profiles")
-// const capsulesRouter = require("./controllers/capsulesController")
+const capsulesRouter = require("./controllers/capsulesController")
 const itemsRouter = require("./controllers/itemsController")
 
-// Routes go here
+// Routes below
 app.use("/test-jwt", testJWTRouter)
 app.use("/users", usersRouter)
 app.use("/profiles", profilesRouter)
-// app.use("/capsules", capsulesRouter)
+app.use("/capsules", capsulesRouter)
 app.use("/items", itemsRouter)
 
 const PORT = process.env.PORT || 3000

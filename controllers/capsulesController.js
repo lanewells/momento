@@ -3,7 +3,7 @@ const router = express.Router()
 const Capsule = require("../models/capsule")
 
 // Get all capsules
-exports.getAllCapsules = async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const capsules = await Capsule.find()
     res.status(200).json(capsules)
@@ -12,10 +12,10 @@ exports.getAllCapsules = async (req, res) => {
       .status(500)
       .json({ error: "Failed to retrieve capsules", details: error.message })
   }
-}
+})
 
 // Get a single capsule by id
-exports.getCapsuleById = async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -33,16 +33,16 @@ exports.getCapsuleById = async (req, res) => {
       .status(500)
       .json({ error: "Failed to retrieve capsule", details: error.message })
   }
-}
+})
 
 // Create a new capsule
-exports.createCapsule = async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { sender, recipient, sealDate, releaseDate, status, items } = req.body
 
-    if (!sender || !releaseDate || !items || items.length === 0) {
+    if (!sender || !releaseDate) {
       return res.status(400).json({
-        error: "Sender, Release Date, and Items are required fields."
+        error: "Sender and Release Date are required fields."
       })
     }
 
@@ -60,10 +60,10 @@ exports.createCapsule = async (req, res) => {
       .status(500)
       .json({ error: "Failed to create capsule", details: error.message })
   }
-}
+})
 
 // Update a capsule by id
-exports.updateCapsule = async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params
     const { sender, recipient, sealDate, releaseDate, status, items } = req.body
@@ -84,10 +84,9 @@ exports.updateCapsule = async (req, res) => {
       .status(500)
       .json({ error: "Failed to update capsule", details: error.message })
   }
-}
-
+})
 // Delete a capsule by id
-exports.deleteCapsule = async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params
     const deletedCapsule = await Capsule.findByIdAndDelete(id)
@@ -102,4 +101,6 @@ exports.deleteCapsule = async (req, res) => {
       .status(500)
       .json({ error: "Failed to delete capsule", details: error.message })
   }
-}
+})
+
+module.exports = router
