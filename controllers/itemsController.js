@@ -8,10 +8,8 @@ router.post("/", async (req, res) => {
     const { type, text, src, altText, capsule_id } = req.body
 
     // Validate required fields
-    if (!type || !text || !capsule_id) {
-      return res
-        .status(400)
-        .json({ error: "Type, text, and capsule_id are required." })
+    if (!type || !text) {
+      return res.status(400).json({ error: "Type and text are required." })
     }
 
     // Create and save the new item
