@@ -5,15 +5,13 @@ const router = express.Router()
 // Create a new item
 router.post("/", async (req, res) => {
   try {
-    const { type, text, src, altText, capsule_id } = req.body
+    const { type, text, src, altText } = req.body
 
-    // Validate required fields
     if (!type || !text) {
       return res.status(400).json({ error: "Type and text are required." })
     }
 
-    // Create and save the new item
-    const newItem = await Item.create({ type, text, src, altText, capsule_id })
+    const newItem = await Item.create({ type, text, src, altText })
     res.status(201).json(newItem)
   } catch (error) {
     res
@@ -56,11 +54,11 @@ router.get("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params
-    const { type, text, src, altText, capsule_id } = req.body
+    const { type, text, src, altText } = req.body
 
     const updatedItem = await Item.findByIdAndUpdate(
       id,
-      { type, text, src, altText, capsule_id },
+      { type, text, src, altText },
       { new: true, runValidators: true }
     )
 

@@ -1,31 +1,33 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose")
 
 const ItemSchema = new mongoose.Schema(
   {
     type: {
       type: String,
-      required: true, 
-      trim: true,
+      enum: ["text", "image", "audio", "hyperlink"],
+      default: "text",
+      required: true,
+      trim: true
     },
     text: {
       type: String,
       required: true,
-      trim: true,
+      trim: true
     },
     src: {
       type: String,
       trim: true,
-      default: null,
+      default: null
     },
     altText: {
       type: String,
       trim: true,
-      default: null,
-    },
+      default: null
+    }
   },
   {
-    timestamps: true, 
+    timestamps: true
   }
-);
+)
 
-module.exports = mongoose.model("Item", ItemSchema);
+module.exports = mongoose.model("Item", ItemSchema)
