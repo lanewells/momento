@@ -34,9 +34,9 @@ router.post("/signup", async (req, res) => {
       user: {
         username: user.username,
         birthDate: user.birthDate,
-        id: user._id,
+        id: user._id
       },
-      token,
+      token
     })
   } catch (error) {
     console.error("Signup error:", error.message)
