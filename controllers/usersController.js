@@ -34,9 +34,9 @@ router.post("/signup", async (req, res) => {
       user: {
         username: user.username,
         birthDate: user.birthDate,
-        id: user._id
+        id: user._id,
       },
-      token
+      token,
     })
   } catch (error) {
     console.error("Signup error:", error.message)
@@ -72,7 +72,15 @@ router.post("/signin", async (req, res) => {
       { expiresIn: "7d" }
     )
 
-    res.status(200).json({ message: "Login successful.", token })
+    res.status(200).json({
+      message: "Login successful.",
+      user: {
+        username: user.username,
+        birthDate: user.birthDate,
+        id: user._id,
+      },
+      token,
+    })
   } catch (error) {
     console.error("Signin error:", error.message)
     res.status(500).json({ error: error.message })
