@@ -3,6 +3,7 @@ const router = express.Router()
 const bcrypt = require("bcrypt")
 const User = require("../models/user")
 const jwt = require("jsonwebtoken")
+const verifyToken = require("../middleware/authMiddleware")
 
 const SALT_ROUNDS = 12
 
@@ -84,6 +85,27 @@ router.post("/signin", async (req, res) => {
   } catch (error) {
     console.error("Signin error:", error.message)
     res.status(500).json({ error: error.message })
+  }
+})
+
+router.delete("/:id", verifyToken, async (req, res) => {
+  try {
+    const { id } = req.params
+
+    if (req.user.id !== id) {
+      return res
+        .status(403)
+        .json({ error: "You can only delete your own account." })
+    }
+
+    const deletedUser = await User.findByIdAndDelete(id)
+    if (!deletedUser) {
+      return res.status(404).json({ error: "User not found." })
+    }
+
+    res.status(200).json({ message: "Account deleted successfully." })
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete account." })
   }
 })
 
