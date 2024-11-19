@@ -35,9 +35,9 @@ router.post("/signup", async (req, res) => {
       user: {
         username: user.username,
         birthDate: user.birthDate,
-        id: user._id,
+        id: user._id
       },
-      token,
+      token
     })
   } catch (error) {
     console.error("Signup error:", error.message)
@@ -78,9 +78,9 @@ router.post("/signin", async (req, res) => {
       user: {
         username: user.username,
         birthDate: user.birthDate,
-        id: user._id,
+        id: user._id
       },
-      token,
+      token
     })
   } catch (error) {
     console.error("Signin error:", error.message)
@@ -150,5 +150,15 @@ router.put("/:id", verifyToken, async (req, res) => {
     res.status(500).json({ error: "Failed to udpate user." })
   }
 })
+
+// Get users
+router.get("/", async (req, res) => {
+  try {
+    const users = await User.find()
+    res.status(200).json(users)
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to retrieve users", details: error.message })
 
 module.exports = router
