@@ -35,9 +35,9 @@ router.post("/signup", async (req, res) => {
       user: {
         username: user.username,
         birthDate: user.birthDate,
-        id: user._id
+        id: user._id,
       },
-      token
+      token,
     })
   } catch (error) {
     console.error("Signup error:", error.message)
@@ -78,9 +78,9 @@ router.post("/signin", async (req, res) => {
       user: {
         username: user.username,
         birthDate: user.birthDate,
-        id: user._id
+        id: user._id,
       },
-      token
+      token,
     })
   } catch (error) {
     console.error("Signin error:", error.message)
@@ -160,6 +160,22 @@ router.get("/", async (req, res) => {
     res
       .status(500)
       .json({ error: "Failed to retrieve users", details: error.message })
+  }
+})
+
+router.get("/:id", verifyToken, async (req, res) => {
+  try {
+    const { id } = req.params
+    if (req.user.id !== id) {
+      return res
+        .status(403)
+        .json({ error: "Unauthorized to access this profile." })
+    }
+
+    res.status(200).json(user)
+  } catch (error) {
+    console.error("Error fetching user profile:", error.message)
+    res.status(500).json({ error: "Failed to fetch user profile." })
   }
 })
 
