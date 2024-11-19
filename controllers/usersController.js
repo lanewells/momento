@@ -185,4 +185,26 @@ router.get("/:id", verifyToken, async (req, res) => {
   }
 })
 
+router.get("/:id/notifications", verifyToken, async (req, res) => {
+  try {
+    const { id } = req.params
+
+    if (req.user.id !== id) {
+      return res
+        .status(403)
+        .json({ error: "Unauthorized to access notifications." })
+    }
+
+    const user = await User.findById(id).select("notifications")
+    if (!user) {
+      return res.status(404).json({ error: "User not found." })
+    }
+
+    res.status(200).json(user.notifications)
+  } catch (error) {
+    console.error("Error fetching notifications:", error.message)
+    res.status(500).json({ error: "Failed to fetch notifications." })
+  }
+})
+
 module.exports = router
