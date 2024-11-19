@@ -1,33 +1,39 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-const ItemSchema = new mongoose.Schema(
-  {
-    type: {
-      type: String,
-      enum: ["text", "image", "audio", "hyperlink"],
-      default: "text",
-      required: true,
-      trim: true
-    },
-    text: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    src: {
-      type: String,
-      trim: true,
-      default: null
-    },
-    altText: {
-      type: String,
-      trim: true,
-      default: null
-    }
+const itemSchema = new mongoose.Schema({
+  type: {
+    type: String,
+    enum: ["message", "hyperlink"],
+    required: true,
   },
-  {
-    timestamps: true
-  }
-)
+  text: {
+    type: String,
+    required: function () {
+      return this.type === "message";
+    },
+  },
+  hyperlink: {
+    type: String,
+    required: function () {
+      return this.type === "hyperlink";
+    },
+    validate: {
+      validator: function (v) {
+        return /^(https?:\/\/)[\w\-]+(\.[\w\-]+)+[/#?]?.*$/.test(v);
+      },
+      message: "Invalid URL format.",
+    },
+  },
+  hyperlinkDescription: {
+    type: String,
+    required: function () {
+      return this.type === "hyperlink";
+    },
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
-module.exports = mongoose.model("Item", ItemSchema)
+module.exports = mongoose.model("Item", itemSchema);
