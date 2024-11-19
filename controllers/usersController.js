@@ -172,6 +172,12 @@ router.get("/:id", verifyToken, async (req, res) => {
         .json({ error: "Unauthorized to access this profile." })
     }
 
+    const user = await User.findById(id).select("-passwordHash")
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found." })
+    }
+
     res.status(200).json(user)
   } catch (error) {
     console.error("Error fetching user profile:", error.message)
