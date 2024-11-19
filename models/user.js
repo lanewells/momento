@@ -25,6 +25,13 @@ const userSchema = new mongoose.Schema(
         message: "Birth date must be in the past.",
       },
     },
+    notifications: [
+      {
+        message: { type: String, required: true },
+        read: { type: Boolean, default: false },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   {
     timestamps: true,
