@@ -207,4 +207,91 @@ router.get("/:id/notifications", verifyToken, async (req, res) => {
   }
 })
 
+router.post("/:id/notifications", verifyToken, async (req, res) => {
+  try {
+    const { id } = req.params
+    const { message } = req.body
+
+    if (req.user.id !== id) {
+      return res
+        .status(403)
+        .json({ error: "Unauthorized to add notifications." })
+    }
+
+    const user = await User.findById(id)
+    if (!user) {
+      return res.status(404).json({ error: "User not found." })
+    }
+
+    const newNotification = { message }
+    user.notifications.push(newNotification)
+    await user.save()
+
+    res.status(201).json(newNotification)
+  } catch (error) {
+    console.error("Error adding notification:", error.message)
+    res.status(500).json({ error: "Failed to add notification." })
+  }
+})
+
+router.patch("/id/notifications/:notifId", verifyToken, async (req, res) => {
+  try {
+    const { id, notifId } = req.params
+
+    if (req.user.id !== id) {
+      return res
+        .status(403)
+        .json({ error: "Unauthorized to modify notifications." })
+    }
+
+    const user = await User.findById(id)
+    if (!user) {
+      return res.status(404).json({ error: "User not found." })
+    }
+
+    const notification = user.nofitications.id(notifId)
+    if (!notification) {
+      return res.status(404).json({ error: "Notification not found." })
+    }
+
+    notification.read = true
+    await user.save()
+
+    res.status(200).json({ message: "Notification marked as read." })
+  } catch (error) {
+    console.error("Error marking notification as read:", error.message)
+    res.status(500).json({ error: "Failed to update notification." })
+  }
+})
+
+router.delete("/:id/notifications/:notifId", verifyToken, async (req, res) => {
+  try {
+    const { id, notifId } = req.params
+
+    if (req.user.id !== id) {
+      return res
+        .status(403)
+        .json({ error: "Unauthorized to delete notifications." })
+    }
+
+    const user = await User.findById(id)
+    if (!user) {
+      return res.status(404).json({ error: "User not found." })
+    }
+
+    const notification = user.notifications.id(notifId)
+    if (!notification) {
+      return res.status(404).json({ error: "Notification not found." })
+    }
+
+    notification.remove()
+    await user.save()
+
+    res.status(200).json({ message: "Notification deleted successfully." })
+  } catch (error) {
+    console.error("Error deleting notifications:", error.message)
+    res.status(500).json({ error: "Failed to delete notification." })
+  }
+})
+
 module.exports = router
