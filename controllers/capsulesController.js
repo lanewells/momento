@@ -42,7 +42,7 @@ router.post("/", async (req, res) => {
 
     if (!sender || !releaseDate) {
       return res.status(400).json({
-        error: "Sender and Release Date are required fields."
+        error: "Release Date is a required field."
       })
     }
 
