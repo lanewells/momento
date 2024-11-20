@@ -21,7 +21,18 @@ router.post("/signup", async (req, res) => {
     }
 
     const passwordHash = await bcrypt.hash(password, SALT_ROUNDS)
-    const user = new User({ username, passwordHash, birthDate })
+    const user = new User({
+      username,
+      passwordHash,
+      birthDate,
+      notifications: [
+        {
+          message: "Welcome to Momento!",
+          read: false,
+          createdAt: new Date(),
+        },
+      ],
+    })
     await user.save()
 
     const token = jwt.sign(
