@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const itemSchema = new mongoose.Schema({
+  capsule: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Capsule",
+    required: true,
+  },
   type: {
     type: String,
     enum: ["message", "hyperlink"],
