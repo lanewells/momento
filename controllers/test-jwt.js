@@ -6,10 +6,9 @@ const mockUser = {
   _id: "1",
   username: "testUser",
   passwordHash: "$2b$10$eW5yqEo1wn.QAqZ2N.QW9e2F3bN3vN4w1vUjO6p5vlJHLxygTOZvu",
-  birthDate: new Date("1990-01-01"),
+  birthDate: new Date("1990-01-01")
 }
 
-// Route to sign a token
 router.get("/sign-token", (req, res) => {
   try {
     const token = jwt.sign(
@@ -23,7 +22,6 @@ router.get("/sign-token", (req, res) => {
   }
 })
 
-// Route to verify a token
 router.post("/verify-token", (req, res) => {
   try {
     const authHeader = req.headers.authorization
