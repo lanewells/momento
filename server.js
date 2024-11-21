@@ -21,7 +21,6 @@ const profilesRouter = require("./controllers/profiles")
 const capsulesRouter = require("./controllers/capsulesController")
 const itemsRouter = require("./controllers/itemsController")
 
-// Routes below
 app.use("/test-jwt", testJWTRouter)
 app.use("/users", usersRouter)
 app.use("/profiles", profilesRouter)

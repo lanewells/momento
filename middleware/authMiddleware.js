@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken")
 
-// Authorization
 function verifyToken(req, res, next) {
   try {
     if (!req.headers.authorization) {
