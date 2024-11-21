@@ -7,7 +7,6 @@ const verifyToken = require("../middleware/authMiddleware")
 
 const SALT_ROUNDS = 12
 
-// Signup
 router.post("/signup", async (req, res) => {
   try {
     const { username, password, birthDate } = req.body
@@ -29,9 +28,9 @@ router.post("/signup", async (req, res) => {
         {
           message: "Welcome to Momento!",
           read: false,
-          createdAt: new Date(),
-        },
-      ],
+          createdAt: new Date()
+        }
+      ]
     })
     await user.save()
 
@@ -46,9 +45,9 @@ router.post("/signup", async (req, res) => {
       user: {
         username: user.username,
         birthDate: user.birthDate,
-        id: user._id,
+        id: user._id
       },
-      token,
+      token
     })
   } catch (error) {
     console.error("Signup error:", error.message)
@@ -56,7 +55,6 @@ router.post("/signup", async (req, res) => {
   }
 })
 
-// Signin
 router.post("/signin", async (req, res) => {
   try {
     const { username, password } = req.body
@@ -89,9 +87,9 @@ router.post("/signin", async (req, res) => {
       user: {
         username: user.username,
         birthDate: user.birthDate,
-        id: user._id,
+        id: user._id
       },
-      token,
+      token
     })
   } catch (error) {
     console.error("Signin error:", error.message)
@@ -99,7 +97,6 @@ router.post("/signin", async (req, res) => {
   }
 })
 
-// Delete
 router.delete("/:id", verifyToken, async (req, res) => {
   try {
     const { id } = req.params
@@ -121,7 +118,6 @@ router.delete("/:id", verifyToken, async (req, res) => {
   }
 })
 
-// Update
 router.put("/:id", verifyToken, async (req, res) => {
   try {
     const { id } = req.params
@@ -153,8 +149,8 @@ router.put("/:id", verifyToken, async (req, res) => {
       user: {
         username: updatedUser.username,
         birthDate: updatedUser.birthDate,
-        id: updatedUser._id,
-      },
+        id: updatedUser._id
+      }
     })
   } catch (error) {
     console.error("Edit user error:", error.message)
@@ -162,7 +158,6 @@ router.put("/:id", verifyToken, async (req, res) => {
   }
 })
 
-// Get users
 router.get("/", async (req, res) => {
   try {
     const users = await User.find()

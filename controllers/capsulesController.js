@@ -2,7 +2,6 @@ const express = require("express")
 const router = express.Router()
 const Capsule = require("../models/capsule")
 
-// Get all capsules
 router.get("/", async (req, res) => {
   try {
     const capsules = await Capsule.find()
@@ -14,7 +13,6 @@ router.get("/", async (req, res) => {
   }
 })
 
-// Get a single capsule by id
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params
@@ -35,10 +33,9 @@ router.get("/:id", async (req, res) => {
   }
 })
 
-// Create a new capsule
 router.post("/", async (req, res) => {
   try {
-    const { sender, recipient, sealDate, releaseDate, status, items } = req.body
+    const { sender, recipient, sealDate, releaseDate, status } = req.body
 
     if (!recipient || !releaseDate) {
       return res.status(400).json({
@@ -51,8 +48,7 @@ router.post("/", async (req, res) => {
       recipient,
       sealDate,
       releaseDate,
-      status,
-      items
+      status
     })
     res.status(201).json(newCapsule)
   } catch (error) {
@@ -61,15 +57,14 @@ router.post("/", async (req, res) => {
   }
 })
 
-// Update a capsule by id
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params
-    const { sender, recipient, sealDate, releaseDate, status, items } = req.body
+    const { sender, recipient, sealDate, releaseDate, status } = req.body
 
     const updatedCapsule = await Capsule.findByIdAndUpdate(
       id,
-      { sender, recipient, sealDate, releaseDate, status, items },
+      { sender, recipient, sealDate, releaseDate, status },
       { new: true, runValidators: true }
     )
 
@@ -84,7 +79,7 @@ router.put("/:id", async (req, res) => {
       .json({ error: "Failed to update capsule", details: error.message })
   }
 })
-// Delete a capsule by id
+
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params

@@ -14,8 +14,7 @@ const capsuleSchema = mongoose.Schema({
     enum: ["sealed", "pending seal", "released"],
     default: "pending seal",
     required: false
-  },
-  items: [{ type: mongoose.Schema.Types.ObjectId, ref: "Item"}]
+  }
 })
 
 module.exports = mongoose.model("Capsule", capsuleSchema)
