@@ -40,9 +40,9 @@ router.post("/", async (req, res) => {
   try {
     const { sender, recipient, sealDate, releaseDate, status, items } = req.body
 
-    if (!sender || !releaseDate) {
+    if (!recipient || !releaseDate) {
       return res.status(400).json({
-        error: "Release Date is a required field."
+        error: "Release Date and Recipient are required fields."
       })
     }
 
@@ -56,9 +56,8 @@ router.post("/", async (req, res) => {
     })
     res.status(201).json(newCapsule)
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Failed to create capsule", details: error.message })
+    console.error("Error creating capsule:", error)
+    res.status(500).json({ error: "Internal Server Error" })
   }
 })
 
