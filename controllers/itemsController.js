@@ -5,10 +5,11 @@ const router = express.Router()
 // Create a new item
 router.post("/", async (req, res) => {
   try {
-    const { type, text, hyperlink, hyperlinkDescription } = req.body;
+    const { type, capsule, text, hyperlink, hyperlinkDescription } = req.body;
 
     const newItem = new Item({
       type,
+      capsule,
       text: type === "message" ? text : undefined,
       hyperlink: type === "hyperlink" ? hyperlink : undefined,
       hyperlinkDescription: type === "hyperlink" ? hyperlinkDescription : undefined,
@@ -21,8 +22,6 @@ router.post("/", async (req, res) => {
     res.status(400).json({ error: "Failed to create item." });
   }
 });
-
-
 
 // Get all items
 router.get("/", async (req, res) => {
