@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const Capsule = require("../models/capsule")
 const mongoose = require("mongoose")
+const User = require("../models/user")
 
 router.get("/", async (req, res) => {
   try {
@@ -85,14 +86,33 @@ router.put("/:id", async (req, res) => {
     const { id } = req.params
     const { sender, recipient, sealDate, releaseDate, status } = req.body
 
-    const recipientUser = await User.findOne({ username: recipient })
+    if (!mongoose.Types.ObjectId.isValid(recipient)) {
+      return res.status(400).json({ error: "Invalid recipient ID." })
+    }
+
+    const recipientUser = await User.findById(recipient)
     if (!recipientUser) {
       return res.status(404).json({ error: "Recipient not found." })
     }
 
+    if (!mongoose.Types.ObjectId.isValid(sender)) {
+      return res.status(400).json({ error: "Invalid sender ID." })
+    }
+
+    const senderUser = await User.findById(sender)
+    if (!senderUser) {
+      return res.status(404).json({ error: "Sender not found." })
+    }
+
     const updatedCapsule = await Capsule.findByIdAndUpdate(
       id,
-      { sender, recipient: recipientUser._id, sealDate, releaseDate, status },
+      {
+        sender: senderUser._id,
+        recipient: recipientUser._id,
+        sealDate,
+        releaseDate,
+        status,
+      },
       { new: true, runValidators: true }
     )
 
