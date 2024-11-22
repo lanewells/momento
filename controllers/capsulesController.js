@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const Capsule = require("../models/capsule")
+const mongoose = require("mongoose")
 
 router.get("/", async (req, res) => {
   try {
@@ -16,10 +17,14 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params
+
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: "Invalid capsule id." })
     }
+
     const capsule = await Capsule.findById(id)
+      .populate("recipient", "username")
+      .populate("sender", "username")
 
     if (!capsule) {
       return res.status(404).json({ error: "Capsule not found" })
@@ -43,13 +48,26 @@ router.post("/", async (req, res) => {
       })
     }
 
-    const recipientUser = await UserActivation.findOne({ username: recipient })
+    if (!mongoose.Types.ObjectId.isValid(recipient)) {
+      return res.status(400).json({ error: "Invalid recipient ID." })
+    }
+
+    const recipientUser = await User.findById(recipient)
     if (!recipientUser) {
       return res.status(404).json({ error: "Recipient not found." })
     }
 
+    if (!mongoose.Types.ObjectId.isValid(sender)) {
+      return res.status(400).json({ error: "Invalid sender ID." })
+    }
+
+    const senderUser = await User.findById(sender)
+    if (!senderUser) {
+      return res.status(404).json({ error: "Sender not found." })
+    }
+
     const newCapsule = await Capsule.create({
-      sender,
+      sender: senderUser._id,
       recipient: recipientUser._id,
       sealDate,
       releaseDate,
