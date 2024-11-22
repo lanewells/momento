@@ -7,6 +7,8 @@ const User = require("../models/user")
 router.get("/", async (req, res) => {
   try {
     const capsules = await Capsule.find()
+      .populate("sender", "username")
+      .populate("recipient", "username")
     res.status(200).json(capsules)
   } catch (error) {
     res
@@ -24,8 +26,8 @@ router.get("/:id", async (req, res) => {
     }
 
     const capsule = await Capsule.findById(id)
-      .populate("recipient", "username")
       .populate("sender", "username")
+      .populate("recipient", "username")
 
     if (!capsule) {
       return res.status(404).json({ error: "Capsule not found" })
