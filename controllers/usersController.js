@@ -28,9 +28,9 @@ router.post("/signup", async (req, res) => {
         {
           message: "Welcome to Momento!",
           read: false,
-          createdAt: new Date()
-        }
-      ]
+          createdAt: new Date(),
+        },
+      ],
     })
     await user.save()
 
@@ -45,9 +45,9 @@ router.post("/signup", async (req, res) => {
       user: {
         username: user.username,
         birthDate: user.birthDate,
-        id: user._id
+        id: user._id,
       },
-      token
+      token,
     })
   } catch (error) {
     console.error("Signup error:", error.message)
@@ -87,13 +87,34 @@ router.post("/signin", async (req, res) => {
       user: {
         username: user.username,
         birthDate: user.birthDate,
-        id: user._id
+        id: user._id,
       },
-      token
+      token,
     })
   } catch (error) {
     console.error("Signin error:", error.message)
     res.status(500).json({ error: error.message })
+  }
+})
+
+router.get("/usernames", async (req, res) => {
+  try {
+    const users = await User.find({}, "username _id")
+    res.status(200).json(users)
+  } catch (error) {
+    console.error("Error fetching usernames:", error.message)
+    res.status(500).json({ error: "Internal Server Error " })
+  }
+})
+
+router.get("/", async (req, res) => {
+  try {
+    const users = await User.find()
+    res.status(200).json(users)
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to retrieve users", details: error.message })
   }
 })
 
@@ -149,23 +170,12 @@ router.put("/:id", verifyToken, async (req, res) => {
       user: {
         username: updatedUser.username,
         birthDate: updatedUser.birthDate,
-        id: updatedUser._id
-      }
+        id: updatedUser._id,
+      },
     })
   } catch (error) {
     console.error("Edit user error:", error.message)
     res.status(500).json({ error: "Failed to udpate user." })
-  }
-})
-
-router.get("/", async (req, res) => {
-  try {
-    const users = await User.find()
-    res.status(200).json(users)
-  } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Failed to retrieve users", details: error.message })
   }
 })
 
