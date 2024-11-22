@@ -9,9 +9,7 @@ mongoose.connect(process.env.MONGODB_URI).catch((error) => {
   console.error("MongoDB connection error:", error)
 })
 
-mongoose.connection.on("connected", () => {
-  console.log(`Connected to MongoDB ${mongoose.connection.name}.`)
-})
+mongoose.connection.on("connected", () => {})
 app.use(cors())
 app.use(express.json())
 
@@ -28,6 +26,4 @@ app.use("/capsules", capsulesRouter)
 app.use("/items", itemsRouter)
 
 const PORT = process.env.PORT || 3000
-app.listen(PORT, () => {
-  console.log(`The express app is running on port ${PORT}!`)
-})
+app.listen(PORT, () => {})
